@@ -1,17 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const diceTab = document.getElementById("dice-tab");
-    const armoryTab = document.getElementById("armory-tab");
-    const diceContent = document.getElementById("dice-content");
-    const armoryContent = document.getElementById("armory-content");
+    const tabs = document.querySelectorAll(".tab");
+    const tabContents = document.querySelectorAll(".tab-content");
 
-    diceTab.addEventListener("click", function () {
-        diceContent.style.display = "block";
-        armoryContent.style.display = "none";
-    });
-
-    armoryTab.addEventListener("click", function () {
-        armoryContent.style.display = "block";
-        diceContent.style.display = "none";
+    tabs.forEach((tab, index) => {
+        tab.addEventListener("click", function () {
+            tabContents.forEach(content => content.style.display = "none");
+            tabContents[index].style.display = "block";
+        });
     });
 
     const rollDiceButton = document.getElementById("roll-dice-button");
@@ -37,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const armorySaveButton = document.getElementById("armory-save-button");
     const savedWeapons = document.getElementById("saved-weapons");
     const armoryResult = document.getElementById("armory-result");
+    const noxiaRulesCheckbox = document.getElementById("noxia-rules");
 
     const weapons = [];
 
@@ -44,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const diceType = parseInt(weaponDiceSelect.value);
         const numRolls = parseInt(weaponNumRollsInput.value);
         const bonusPoints = parseInt(weaponBonusPointsInput.value);
+        const noxiaRulesChecked = noxiaRulesCheckbox.checked;
 
         let totalResult = 0;
         let rolledNumbers = [];
@@ -52,6 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
             rolledNumbers.push(rolledNumber);
             totalResult += rolledNumber;
+        }
+
+        if (noxiaRulesChecked && diceType === 20 && rolledNumbers.includes(20)) {
+            totalResult *= 2;
         }
 
         totalResult = Math.max(1, totalResult + bonusPoints);
@@ -79,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponItem.innerHTML = `<p>${name}</p>`;
 
         weaponItem.addEventListener("click", function () {
-            const { name, diceType, numRolls, bonusPoints } = weapon;
+            const { diceType, numRolls, bonusPoints } = weapon;
             let totalResult = 0;
             let rolledNumbers = [];
 
@@ -87,6 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
                 rolledNumbers.push(rolledNumber);
                 totalResult += rolledNumber;
+            }
+
+            if (noxiaRulesCheckbox.checked && diceType === 20 && rolledNumbers.includes(20)) {
+                totalResult *= 2;
             }
 
             totalResult = Math.max(1, totalResult + bonusPoints);
