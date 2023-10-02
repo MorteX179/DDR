@@ -51,12 +51,12 @@ document.addEventListener("DOMContentLoaded", function () {
         let rolledNumbers = [];
 
         for (let i = 0; i < numRolls; i++) {
-            const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
+                        const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
             rolledNumbers.push(rolledNumber);
             totalResult += rolledNumber;
         }
 
-        if (noxiaRulesChecked) {
+        if (noxiaRulesChecked && diceType === 20 && rolledNumbers.includes(20)) {
             totalResult *= 2;
         }
 
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 totalResult += rolledNumber;
             }
 
-            if (noxiaRulesChecked) {
+            if (noxiaRulesCheckbox.checked && diceType === 20 && rolledNumbers.includes(20)) {
                 totalResult *= 2;
             }
 
@@ -111,3 +111,5 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponBonusPointsInput.value = 0;
     });
 });
+
+                
