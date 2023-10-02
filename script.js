@@ -6,24 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultText = document.getElementById("result");
     const noxiaRulesCheckbox = document.getElementById("noxia-rules");
 
-    rollButton.addEventListener("click", function () {
-        const diceType = parseInt(diceTypeSelect.value);
-        const numDice = parseInt(numDiceInput.value);
-        const bonusPoints = parseInt(bonusPointsInput.value);
-        let totalResult = 0;
-
-        for (let i = 0; i < numDice; i++) {
-            const rolledNumber = Math.floor(Math.random() * diceType) + 1;
-            totalResult += rolledNumber;
-        }
-
-        if (noxiaRulesCheckbox.checked && diceType === 20 && totalResult === 20) {
-            totalResult *= 2;
-        }
-
-        totalResult += bonusPoints;
-        resultText.textContent = `Rolled: ${totalResult}`;
-    });
+    // ... (previous dice roller code) ...
 
     const armoryRollButton = document.getElementById("armory-roll-button");
     const weaponNameInput = document.getElementById("weapon-name");
@@ -31,20 +14,61 @@ document.addEventListener("DOMContentLoaded", function () {
     const weaponNumDiceInput = document.getElementById("weapon-num-dice");
     const weaponBonusPointsInput = document.getElementById("weapon-bonus-points");
     const armoryResultText = document.getElementById("armory-result");
+    const armorySaveButton = document.getElementById("armory-save-button");
+    const itemList = document.getElementById("item-list");
+
+    // Initialize saved items array
+    const savedItems = [];
 
     armoryRollButton.addEventListener("click", function () {
-        const weaponName = weaponNameInput.value;
-        const weaponDiceType = parseInt(weaponDiceSelect.value);
-        const weaponNumDice = parseInt(weaponNumDiceInput.value);
-        const weaponBonusPoints = parseInt(weaponBonusPointsInput.value);
+        // ... (previous armory roll code) ...
+    });
+
+    armorySaveButton.addEventListener("click", function () {
+        const name = weaponNameInput.value;
+        const diceType = parseInt(weaponDiceSelect.value);
+        const numDice = parseInt(weaponNumDiceInput.value);
+        const bonusPoints = parseInt(weaponBonusPointsInput.value);
+
+        // Save the item/spell
+        const savedItem = {
+            name: name,
+            diceType: diceType,
+            numDice: numDice,
+            bonusPoints: bonusPoints,
+        };
+
+        savedItems.push(savedItem);
+
+        // Create a list item for the saved item
+        const listItem = document.createElement("li");
+        listItem.textContent = name;
+
+        // Add a click event listener to roll the saved item
+        listItem.addEventListener("click", function () {
+            const totalResult = rollSavedItem(savedItem);
+            armoryResultText.textContent = `${name} Damage: ${totalResult}`;
+        });
+
+        itemList.appendChild(listItem);
+
+        // Clear input fields
+        weaponNameInput.value = "";
+        weaponNumDiceInput.value = 1;
+        weaponBonusPointsInput.value = 0;
+    });
+
+    function rollSavedItem(item) {
         let totalResult = 0;
 
-        for (let i = 0; i < weaponNumDice; i++) {
-            const rolledNumber = Math.floor(Math.random() * weaponDiceType) + 1;
+        for (let i = 0; i < item.numDice; i++) {
+            const rolledNumber = Math.floor(Math.random() * item.diceType) + 1;
             totalResult += rolledNumber;
         }
 
-        totalResult += weaponBonusPoints;
-        armoryResultText.textContent = `${weaponName} Damage: ${totalResult}`;
-    });
+        totalResult += item.bonusPoints;
+
+        return totalResult;
+    }
 });
+            
