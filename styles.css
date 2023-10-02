@@ -1,77 +1,69 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
 }
 
 .tabs {
-    background-color: #333;
     display: flex;
     justify-content: center;
-    padding: 10px 0;
+    margin-top: 20px;
 }
 
 .tab {
-    background-color: #444;
+    background-color: #007BFF;
     color: #fff;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    font-size: 18px;
-    margin: 0 10px;
-    border-radius: 5px;
+    margin-right: 10px;
 }
 
 .tab:hover {
-    background-color: #555;
+    background-color: #0056b3;
 }
 
 .tab-content {
     display: none;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
 }
 
 h1 {
-    color: #333;
+    font-size: 24px;
 }
 
 label {
     font-weight: bold;
-}
-
-select, input[type="number"] {
-    padding: 5px;
-    margin: 5px 0;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #009688;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #007b6b;
-}
-
-#dice-result, #armory-result {
     margin-top: 10px;
 }
 
+select, input[type="number"] {
+    width: 100px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
 .saved-weapon {
-    margin: 10px 0;
-    padding: 10px;
-    background-color: #eee;
-    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 5px;
+    margin-top: 5px;
+    cursor: pointer;
 }
 
 .saved-weapon:hover {
-    background-color: #ddd;
+    background-color: #d9d9d9;
 }
