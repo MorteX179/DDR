@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (noxiaRulesChecked) {
-            totalResult *= 2; // Double the total result if Noxia RULES is checked.
+            totalResult *= 2;
         }
 
         totalResult = Math.max(1, totalResult + bonusPoints);
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (noxiaRulesChecked) {
-                totalResult *= 2; // Double the total result if Noxia RULES is checked.
+                totalResult *= 2;
             }
 
             totalResult = Math.max(1, totalResult + bonusPoints);
