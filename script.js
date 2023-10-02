@@ -1,19 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const tabs = document.querySelectorAll(".tab");
-    const tabContents = document.querySelectorAll(".tab-content");
+    const diceTab = document.getElementById("dice-tab");
+    const armoryTab = document.getElementById("armory-tab");
+    const diceContent = document.getElementById("dice-content");
+    const armoryContent = document.getElementById("armory-content");
 
-    // Hide all tab contents on page load except the first one
-    tabContents.forEach((content, index) => {
-        if (index !== 0) {
-            content.style.display = "none";
-        }
+    diceTab.addEventListener("click", function () {
+        diceContent.style.display = "block";
+        armoryContent.style.display = "none";
     });
 
-    tabs.forEach((tab, index) => {
-        tab.addEventListener("click", function () {
-            tabContents.forEach(content => content.style.display = "none");
-            tabContents[index].style.display = "block";
-        });
+    armoryTab.addEventListener("click", function () {
+        armoryContent.style.display = "block";
+        diceContent.style.display = "none";
     });
 
     const rollDiceButton = document.getElementById("roll-dice-button");
