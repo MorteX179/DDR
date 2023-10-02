@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const armorySaveButton = document.getElementById("armory-save-button");
     const savedWeapons = document.getElementById("saved-weapons");
     const armoryResult = document.getElementById("armory-result");
+    const noxiaRulesCheckbox = document.getElementById("noxia-rules");
 
     const weapons = [];
 
@@ -44,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const diceType = parseInt(weaponDiceSelect.value);
         const numRolls = parseInt(weaponNumRollsInput.value);
         const bonusPoints = parseInt(weaponBonusPointsInput.value);
-        const noxiaRulesChecked = document.getElementById("noxia-rules").checked;
+        const noxiaRulesChecked = noxiaRulesCheckbox.checked;
 
         let totalResult = 0;
         let rolledNumbers = [];
@@ -55,11 +56,11 @@ document.addEventListener("DOMContentLoaded", function () {
             totalResult += rolledNumber;
         }
 
-        totalResult = Math.max(1, totalResult + bonusPoints);
-
         if (noxiaRulesChecked) {
-            totalResult *= 2;
+            totalResult *= 2; // Double the total result if Noxia RULES is checked.
         }
+
+        totalResult = Math.max(1, totalResult + bonusPoints);
 
         armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
     });
@@ -94,11 +95,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 totalResult += rolledNumber;
             }
 
-            totalResult = Math.max(1, totalResult + bonusPoints);
-
             if (noxiaRulesChecked) {
-                totalResult *= 2;
+                totalResult *= 2; // Double the total result if Noxia RULES is checked.
             }
+
+            totalResult = Math.max(1, totalResult + bonusPoints);
 
             armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
         });
