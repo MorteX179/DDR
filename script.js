@@ -1,96 +1,104 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const rollButton = document.getElementById("roll-button");
+    const diceTab = document.getElementById("dice-tab");
+    const armoryTab = document.getElementById("armory-tab");
+    const diceContent = document.getElementById("dice-content");
+    const armoryContent = document.getElementById("armory-content");
+
+    diceTab.addEventListener("click", function () {
+        diceContent.style.display = "block";
+        armoryContent.style.display = "none";
+    });
+
+    armoryTab.addEventListener("click", function () {
+        armoryContent.style.display = "block";
+        diceContent.style.display = "none";
+    });
+
+    const rollDiceButton = document.getElementById("roll-dice-button");
     const diceTypeSelect = document.getElementById("dice-type");
-    const numDiceInput = document.getElementById("num-dice");
     const bonusPointsInput = document.getElementById("bonus-points");
-    const resultText = document.getElementById("result");
-    const noxiaRulesCheckbox = document.getElementById("noxia-rules");
+    const diceResult = document.getElementById("dice-result");
 
-    rollButton.addEventListener("click", function () {
+    rollDiceButton.addEventListener("click", function () {
         const diceType = parseInt(diceTypeSelect.value);
-        const numDice = parseInt(numDiceInput.value);
         const bonusPoints = parseInt(bonusPointsInput.value);
-        let totalResult = 0;
 
-        for (let i = 0; i < numDice; i++) {
-            const rolledNumber = Math.floor(Math.random() * diceType) + 1;
-            totalResult += rolledNumber;
-        }
+        const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
+        const totalResult = Math.max(1, rolledNumber + bonusPoints);
 
-        if (noxiaRulesCheckbox.checked && diceType === 20 && totalResult === 20) {
-            totalResult *= 2;
-        }
-
-        totalResult += bonusPoints;
-        resultText.textContent = `Rolled: ${totalResult}`;
+        diceResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumber}</p><p>Bonus Points: ${bonusPoints}</p>`;
     });
 
     const armoryRollButton = document.getElementById("armory-roll-button");
     const weaponNameInput = document.getElementById("weapon-name");
     const weaponDiceSelect = document.getElementById("weapon-dice");
-    const weaponNumDiceInput = document.getElementById("weapon-num-dice");
+    const weaponNumRollsInput = document.getElementById("weapon-num-rolls");
     const weaponBonusPointsInput = document.getElementById("weapon-bonus-points");
-    const armoryResultText = document.getElementById("armory-result");
     const armorySaveButton = document.getElementById("armory-save-button");
-    const itemList = document.getElementById("item-list");
+    const savedWeapons = document.getElementById("saved-weapons");
+    const armoryResult = document.getElementById("armory-result");
 
-    const savedItems = [];
+    const weapons = [];
 
     armoryRollButton.addEventListener("click", function () {
         const diceType = parseInt(weaponDiceSelect.value);
-        const numDice = parseInt(weaponNumDiceInput.value);
+        const numRolls = parseInt(weaponNumRollsInput.value);
         const bonusPoints = parseInt(weaponBonusPointsInput.value);
-        let totalResult = 0;
 
-        for (let i = 0; i < numDice; i++) {
-            const rolledNumber = Math.floor(Math.random() * diceType) + 1;
+        let totalResult = 0;
+        let rolledNumbers = [];
+
+        for (let i = 0; i < numRolls; i++) {
+            const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
+            rolledNumbers.push(rolledNumber);
             totalResult += rolledNumber;
         }
 
-        totalResult += bonusPoints;
-        armoryResultText.textContent = `Rolled: ${totalResult}`;
+        totalResult = Math.max(1, totalResult + bonusPoints);
+
+        armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
     });
 
     armorySaveButton.addEventListener("click", function () {
         const name = weaponNameInput.value;
         const diceType = parseInt(weaponDiceSelect.value);
-        const numDice = parseInt(weaponNumDiceInput.value);
+        const numRolls = parseInt(weaponNumRollsInput.value);
         const bonusPoints = parseInt(weaponBonusPointsInput.value);
 
-        const savedItem = {
+        const weapon = {
             name: name,
             diceType: diceType,
-            numDice: numDice,
+            numRolls: numRolls,
             bonusPoints: bonusPoints,
         };
 
-        savedItems.push(savedItem);
+        weapons.push(weapon);
 
-        const listItem = document.createElement("li");
-        listItem.textContent = name;
+        const weaponItem = document.createElement("div");
+        weaponItem.className = "saved-weapon";
+        weaponItem.innerHTML = `<p>${name}</p>`;
 
-        listItem.addEventListener("click", function () {
-            const totalResult = rollSavedItem(savedItem);
-            armoryResultText.textContent = `${name} Damage: ${totalResult}`;
+        weaponItem.addEventListener("click", function () {
+            const { name, diceType, numRolls, bonusPoints } = weapon;
+            let totalResult = 0;
+            let rolledNumbers = [];
+
+            for (let i = 0; i < numRolls; i++) {
+                const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
+                rolledNumbers.push(rolledNumber);
+                totalResult += rolledNumber;
+            }
+
+            totalResult = Math.max(1, totalResult + bonusPoints);
+
+            armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
         });
 
-        itemList.appendChild(listItem);
+        savedWeapons.appendChild(weaponItem);
 
         weaponNameInput.value = "";
-        weaponNumDiceInput.value = 1;
+        weaponNumRollsInput.value = 1;
         weaponBonusPointsInput.value = 0;
     });
-
-    function rollSavedItem(item) {
-        let totalResult = 0;
-
-        for (let i = 0; i < item.numDice; i++) {
-            const rolledNumber = Math.floor(Math.random() * item.diceType) + 1;
-            totalResult += rolledNumber;
-        }
-
-        totalResult += item.bonusPoints;
-
-        return totalResult;
-    }
 });
+                 
