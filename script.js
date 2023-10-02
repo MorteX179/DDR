@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let rolledNumbers = [];
 
         for (let i = 0; i < numRolls; i++) {
-                        const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
+            const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
             rolledNumbers.push(rolledNumber);
             totalResult += rolledNumber;
         }
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponItem.innerHTML = `<p>${name}</p>`;
 
         weaponItem.addEventListener("click", function () {
-            const { name, diceType, numRolls, bonusPoints } = weapon;
+            const { diceType, numRolls, bonusPoints } = weapon;
             let totalResult = 0;
             let rolledNumbers = [];
 
@@ -111,5 +111,3 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponBonusPointsInput.value = 0;
     });
 });
-
-                
