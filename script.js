@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const diceType = parseInt(weaponDiceSelect.value);
         const numRolls = parseInt(weaponNumRollsInput.value);
         const bonusPoints = parseInt(weaponBonusPointsInput.value);
+        const noxiaRulesChecked = document.getElementById("noxia-rules").checked;
 
         let totalResult = 0;
         let rolledNumbers = [];
@@ -55,6 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         totalResult = Math.max(1, totalResult + bonusPoints);
+
+        if (noxiaRulesChecked) {
+            totalResult *= 2;
+        }
 
         armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
     });
@@ -91,6 +96,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             totalResult = Math.max(1, totalResult + bonusPoints);
 
+            if (noxiaRulesChecked) {
+                totalResult *= 2;
+            }
+
             armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
         });
 
@@ -101,4 +110,5 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponBonusPointsInput.value = 0;
     });
 });
-            
+
+                    
