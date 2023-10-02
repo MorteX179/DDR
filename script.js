@@ -1,12 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const tabs = document.querySelectorAll(".tab");
-    const tabContents = document.querySelectorAll(".tab-content");
+    const diceTab = document.getElementById("dice-tab");
+    const armoryTab = document.getElementById("armory-tab");
+    const diceContent = document.getElementById("dice-content");
+    const armoryContent = document.getElementById("armory-content");
 
-    tabs.forEach((tab, index) => {
-        tab.addEventListener("click", function () {
-            tabContents.forEach(content => content.style.display = "none");
-            tabContents[index].style.display = "block";
-        });
+    diceTab.addEventListener("click", function () {
+        diceContent.style.display = "block";
+        armoryContent.style.display = "none";
+    });
+
+    armoryTab.addEventListener("click", function () {
+        armoryContent.style.display = "block";
+        diceContent.style.display = "none";
     });
 
     const rollDiceButton = document.getElementById("roll-dice-button");
@@ -24,40 +29,57 @@ document.addEventListener("DOMContentLoaded", function () {
         diceResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumber}</p><p>Bonus Points: ${bonusPoints}</p>`;
     });
 
-    const armorySaveButton = document.getElementById("armory-save-button");
+    const armoryRollButton = document.getElementById("armory-roll-button");
     const weaponNameInput = document.getElementById("weapon-name");
     const weaponDiceSelect = document.getElementById("weapon-dice");
     const weaponNumRollsInput = document.getElementById("weapon-num-rolls");
     const weaponBonusPointsInput = document.getElementById("weapon-bonus-points");
+    const armorySaveButton = document.getElementById("armory-save-button");
     const savedWeapons = document.getElementById("saved-weapons");
     const armoryResult = document.getElementById("armory-result");
-    const noxiaRulesCheckbox = document.getElementById("noxia-rules");
 
     const weapons = [];
+
+    armoryRollButton.addEventListener("click", function () {
+        const diceType = parseInt(weaponDiceSelect.value);
+        const numRolls = parseInt(weaponNumRollsInput.value);
+        const bonusPoints = parseInt(weaponBonusPointsInput.value);
+
+        let totalResult = 0;
+        let rolledNumbers = [];
+
+        for (let i = 0; i < numRolls; i++) {
+            const rolledNumber = Math.max(1, Math.floor(Math.random() * diceType) + 1);
+            rolledNumbers.push(rolledNumber);
+            totalResult += rolledNumber;
+        }
+
+        totalResult = Math.max(1, totalResult + bonusPoints);
+
+        armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
+    });
 
     armorySaveButton.addEventListener("click", function () {
         const name = weaponNameInput.value;
         const diceType = parseInt(weaponDiceSelect.value);
         const numRolls = parseInt(weaponNumRollsInput.value);
         const bonusPoints = parseInt(weaponBonusPointsInput.value);
-        const noxiaRulesChecked = noxiaRulesCheckbox.checked;
 
         const weapon = {
             name: name,
             diceType: diceType,
             numRolls: numRolls,
             bonusPoints: bonusPoints,
-            noxiaRules: noxiaRulesChecked
         };
 
         weapons.push(weapon);
 
         const weaponItem = document.createElement("div");
-        weaponItem.className = "dice";
-        weaponItem.innerHTML = `<p>${name}</p><button class="remove-button">Remove</button>`;
+        weaponItem.className = "saved-weapon";
+        weaponItem.innerHTML = `<p>${name}</p>`;
 
         weaponItem.addEventListener("click", function () {
-            const { diceType, numRolls, bonusPoints, noxiaRules } = weapon;
+            const { name, diceType, numRolls, bonusPoints } = weapon;
             let totalResult = 0;
             let rolledNumbers = [];
 
@@ -67,24 +89,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 totalResult += rolledNumber;
             }
 
-            if (noxiaRules && diceType === 20 && rolledNumbers.includes(20)) {
-                totalResult *= 2;
-            }
-
             totalResult = Math.max(1, totalResult + bonusPoints);
 
             armoryResult.innerHTML = `<p>Total Result: ${totalResult}</p><p>Rolled: ${rolledNumbers.join(", ")}</p><p>Bonus Points: ${bonusPoints}</p>`;
-        });
-
-        const removeButton = weaponItem.querySelector(".remove-button");
-        removeButton.addEventListener("click", function (event) {
-            event.stopPropagation();
-
-            const index = weapons.indexOf(weapon);
-            if (index !== -1) {
-                weapons.splice(index, 1);
-                savedWeapons.removeChild(weaponItem);
-            }
         });
 
         savedWeapons.appendChild(weaponItem);
@@ -92,19 +99,5 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponNameInput.value = "";
         weaponNumRollsInput.value = 1;
         weaponBonusPointsInput.value = 0;
-        noxiaRulesCheckbox.checked = false;
-    });
-
-    const removeWeaponButtons = document.querySelectorAll(".remove-button");
-
-    removeWeaponButtons.forEach((button, index) => {
-        button.addEventListener("click", function (event) {
-            event.stopPropagation();
-
-            weapons.splice(index, 1);
-            const weaponItem = button.parentNode;
-            savedWeapons.removeChild(weaponItem);
-        });
     });
 });
-            
